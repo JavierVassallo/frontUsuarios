@@ -1,12 +1,15 @@
 .App {
   text-align: center;
+  padding: 50px;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
+table, tr, td {
+  border:1px solid black;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
