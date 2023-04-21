@@ -1,4 +1,4 @@
-const Listado = ({ listaUsuarios }) => {
+const Listado = ({ listaUsuarios, handleChangeUser }) => {
   return listaUsuarios.length > 0 ? (
     <table>
       <tr>
@@ -10,14 +10,14 @@ const Listado = ({ listaUsuarios }) => {
       </tr>
       {listaUsuarios.map((usuario, key) => {
         return (
-          <tr>
+          <tr key={usuario._id}>
             <td> {usuario.nombre}</td>
             <td> {usuario.username}</td>
             <td> {usuario.rol}</td>
             <td>{usuario.fechaCreacion}</td>
             <td
               onClick={() => {
-                alert("soy el usuario" + key);
+                handleChangeUser(usuario.username);
               }}
               style={{ color: "blue", cursor: "pointer" }}
             >

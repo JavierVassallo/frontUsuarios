@@ -1,40 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Listado from "./listado";
+import { getUsers } from "../services";
+import VistaUsuario from "./vistaUsuario";
+import FormUser from "./formUser";
 
 const Menu = () => {
   const [mostrarListado, setMostrarListado] = useState(false);
   const [mostrarCrear, setMostrarCrear] = useState(false);
   const [mostrarUsuario, setMostrarUsuario] = useState(false);
 
-  const handleListadoClick = () => {
+  const [listadoBack, setListadoBack] = useState([]);
+  const [userNameSelected, setUserNameSelected] = useState(null);
+  const handleChangeUser = (username) => {
+    console.log("me ejecuto");
+    setUserNameSelected(username);
+  };
+
+  const handleListadoClick = async () => {
     setMostrarListado(true);
     setMostrarCrear(false);
     setMostrarUsuario(false);
+    let listado = await getUsers();
+    setListadoBack(listado);
   };
   const handleCrearClick = () => {
     setMostrarListado(false);
     setMostrarCrear(true);
     setMostrarUsuario(false);
   };
-  const handleUsuarioClick = () => {
+  const mostrarUsuarioFuncion = () => {
     setMostrarListado(false);
     setMostrarCrear(false);
     setMostrarUsuario(true);
   };
-  const mockListado = [
-    {
-      nombre: "Javier",
-      username: "javi_userad",
-      rol: "administrador",
-      fechaCreacion: "2020-05-12",
-    },
-    {
-      nombre: "Juan",
-      username: "juan_456",
-      rol: "usuario",
-      fechaCreacion: "2020-07-22",
-    },
-  ];
+  useEffect(() => {
+    if (userNameSelected) {
+      mostrarUsuarioFuncion();
+    }
+  }, [userNameSelected]);
   return (
     <div
       style={{
@@ -87,7 +90,16 @@ const Menu = () => {
       </div>
 
       <div style={{ marginTop: "2vh" }}>
-        {mostrarListado && <Listado listaUsuarios={mockListado} />}
+        {mostrarListado && (
+          <Listado
+            listaUsuarios={listadoBack}
+            handleChangeUser={handleChangeUser}
+          />
+        )}
+
+        {mostrarUsuario && <VistaUsuario username={userNameSelected} />}
+
+        {mostrarCrear && <FormUser />}
       </div>
     </div>
   );
